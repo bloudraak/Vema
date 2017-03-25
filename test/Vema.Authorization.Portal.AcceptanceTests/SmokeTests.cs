@@ -24,25 +24,29 @@
 
 #endregion
 
-using System;
-using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using IdentityModel.Client;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.TestHost;
 using Xunit;
 
 namespace Vema.Authorization.Portal.AcceptanceTests
 {
-    public class SmokeTests : IDisposable
+    public class SmokeTests
     {
+        private readonly TestServer _server;
+        private HttpClient _client;
+        private HttpMessageHandler _handler;
+
         public SmokeTests()
         {
-            _client = new HttpClient();
-            _client.BaseAddress = new Uri("http://localhost:5000");
+            var webHostBuilder = new WebHostBuilder().UseStartup<Startup>();
+            _server = new TestServer(webHostBuilder);
+            _handler = _server.CreateHandler();
+            _client = _server.CreateClient();
         }
-
-        private readonly HttpClient _client;
 
         [Fact]
         public async Task HomePage()
@@ -63,23 +67,30 @@ namespace Vema.Authorization.Portal.AcceptanceTests
         public async Task OpenIdConfiguration()
         {
             // Arrange
-            var requestUri = "/.well-known/openid-configuration";
 
             // Act
-            var response = await _client.GetAsync(requestUri);
-            var content = await response.Content.ReadAsStringAsync();
+            var authority = "http://localhost:5000";
+            DiscoveryClient client = new DiscoveryClient(authority, _handler);
+            var disco = await client.GetAsync();
 
             // Assert
-            JsonSerializer serializer = new JsonSerializer();
-            dynamic doc = serializer.Deserialize(new JsonTextReader(new StringReader(content)));
-
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal("http://localhost:5000", (string)doc.issuer);
+            Assert.Equal(null, disco.Error);
+            Assert.Equal("http://localhost:5000/connect/authorize", disco.AuthorizeEndpoint);
+            Assert.Equal("http://localhost:5000/connect/checksession", disco.CheckSessionIframe);
+            Assert.Equal("http://localhost:5000/connect/endsession", disco.EndSessionEndpoint);
+            Assert.Equal("http://localhost:5000/connect/introspect", disco.IntrospectionEndpoint);
+            Assert.Equal("http://localhost:5000", disco.Issuer);
+            Assert.Equal("http://localhost:5000/.well-known/openid-configuration/jwks", disco.JwksUri);
+            Assert.Equal(null, disco.RegistrationEndpoint);
+            Assert.Equal("http://localhost:5000/connect/revocation", disco.RevocationEndpoint);
+            Assert.Equal("http://localhost:5000/connect/token", disco.TokenEndpoint);
+            Assert.Equal("http://localhost:5000/connect/userinfo", disco.UserInfoEndpoint);
+            
         }
 
-        public void Dispose()
-        {
-            _client.Dispose();
-        }
+        //public void Dispose()
+        //{
+        //    _client.Dispose();
+        //}
     }
 }

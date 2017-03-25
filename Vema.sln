@@ -6,6 +6,20 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vema.Authorization.Portal", "src\Vema.Authorization.Portal\Vema.Authorization.Portal.csproj", "{DFC05355-C123-4130-9FBB-B2DB1E4CAEAC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vema.Authorization.Portal.AcceptanceTests", "test\Vema.Authorization.Portal.AcceptanceTests\Vema.Authorization.Portal.AcceptanceTests.csproj", "{5BCE98A4-A42D-4617-9A62-FCE24E64D619}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DFC05355-C123-4130-9FBB-B2DB1E4CAEAC} = {DFC05355-C123-4130-9FBB-B2DB1E4CAEAC}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vema.Authorization.Server", "src\Vema.Authorization.Server\Vema.Authorization.Server.csproj", "{3E1D4721-4C72-4845-AE27-13582296AF91}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DFC05355-C123-4130-9FBB-B2DB1E4CAEAC} = {DFC05355-C123-4130-9FBB-B2DB1E4CAEAC}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vema.Authorization.Server.AcceptanceTests", "test\Vema.Authorization.Server.AcceptanceTests\Vema.Authorization.Server.AcceptanceTests.csproj", "{DAB22BA1-A049-4964-B756-5627FBC3F0D8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3E1D4721-4C72-4845-AE27-13582296AF91} = {3E1D4721-4C72-4845-AE27-13582296AF91}
+		{DFC05355-C123-4130-9FBB-B2DB1E4CAEAC} = {DFC05355-C123-4130-9FBB-B2DB1E4CAEAC}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +35,14 @@ Global
 		{5BCE98A4-A42D-4617-9A62-FCE24E64D619}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BCE98A4-A42D-4617-9A62-FCE24E64D619}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BCE98A4-A42D-4617-9A62-FCE24E64D619}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E1D4721-4C72-4845-AE27-13582296AF91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E1D4721-4C72-4845-AE27-13582296AF91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E1D4721-4C72-4845-AE27-13582296AF91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E1D4721-4C72-4845-AE27-13582296AF91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAB22BA1-A049-4964-B756-5627FBC3F0D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAB22BA1-A049-4964-B756-5627FBC3F0D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAB22BA1-A049-4964-B756-5627FBC3F0D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAB22BA1-A049-4964-B756-5627FBC3F0D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
