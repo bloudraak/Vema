@@ -3,7 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vema.Authorization.Portal", "src\Vema.Authorization.Portal\Vema.Authorization.Portal.csproj", "{DFC05355-C123-4130-9FBB-B2DB1E4CAEAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vema.Authorization.Portal.AcceptanceTests", "test\Vema.Authorization.Portal.AcceptanceTests\Vema.Authorization.Portal.AcceptanceTests.csproj", "{5BCE98A4-A42D-4617-9A62-FCE24E64D619}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DFC05355-C123-4130-9FBB-B2DB1E4CAEAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFC05355-C123-4130-9FBB-B2DB1E4CAEAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFC05355-C123-4130-9FBB-B2DB1E4CAEAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFC05355-C123-4130-9FBB-B2DB1E4CAEAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BCE98A4-A42D-4617-9A62-FCE24E64D619}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BCE98A4-A42D-4617-9A62-FCE24E64D619}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BCE98A4-A42D-4617-9A62-FCE24E64D619}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BCE98A4-A42D-4617-9A62-FCE24E64D619}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
