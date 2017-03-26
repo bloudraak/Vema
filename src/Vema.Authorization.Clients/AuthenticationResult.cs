@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using IdentityModel.Client;
 
 namespace Vema.Authorization.Clients
 {

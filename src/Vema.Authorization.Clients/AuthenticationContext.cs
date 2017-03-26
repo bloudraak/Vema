@@ -28,6 +28,7 @@ using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using IdentityModel.Client;
 
 namespace Vema.Authorization.Clients
 {
