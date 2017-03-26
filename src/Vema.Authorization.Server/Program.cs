@@ -26,11 +26,12 @@ namespace Vema.Authorization.Server
                     .Build();
 
                 host.Run();
+
                 return 0;
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine(e);
+                Console.Error.WriteLine(e.Message);
                 return 1;
             }
         }
