@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vema.Authorization.Server.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vema.Authorization.Clients", "src\Vema.Authorization.Clients\Vema.Authorization.Clients.csproj", "{4535BC74-9867-46A8-83F7-DAD9135CDCBB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vema.Authorization.Clients.AcceptanceTests", "test\Vema.Authorization.Clients.AcceptanceTests\Vema.Authorization.Clients.AcceptanceTests.csproj", "{78DA6E86-6714-4B77-AC7D-4167957707DE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{4535BC74-9867-46A8-83F7-DAD9135CDCBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4535BC74-9867-46A8-83F7-DAD9135CDCBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4535BC74-9867-46A8-83F7-DAD9135CDCBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78DA6E86-6714-4B77-AC7D-4167957707DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78DA6E86-6714-4B77-AC7D-4167957707DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78DA6E86-6714-4B77-AC7D-4167957707DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78DA6E86-6714-4B77-AC7D-4167957707DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
