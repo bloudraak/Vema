@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 
 // The MIT License (MIT)
 // 
@@ -24,25 +24,41 @@
 
 #endregion
 
-using System.Threading.Tasks;
-using Xunit;
-//using IdentityModel.Client;
+using System;
+using IdentityModel.Client;
 
 namespace Vema.Authorization.Server.AcceptanceTests
 {
-    public class UnitTest1
+    public class AuthenticationResult
     {
-        [Fact]
-        public Task Test1()
+        private readonly TokenResponse _response;
+
+        internal AuthenticationResult(TokenResponse response)
         {
-            // Arrange 
+            if (response == null)
+                throw new ArgumentNullException(nameof(response));
 
-            // Act
-            //var disco = await DiscoveryClient.GetAsync("http://localhost:5000");
+            _response = response;
+        }
 
-            // Assert
+        public string AccessToken
+        {
+            get { return _response.AccessToken; }
+        }
 
-            return Task.CompletedTask;
+        public string IdentityToken
+        {
+            get { return _response.IdentityToken; }
+        }
+
+        public string RefreshToken
+        {
+            get { return _response.RefreshToken; }
+        }
+
+        public long ExpiresIn
+        {
+            get { return _response.ExpiresIn; }
         }
     }
 }

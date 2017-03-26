@@ -5,11 +5,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="..\..\src\Vema.Authorization.Server\appsettings.Development.json" Link="appsettings.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\src\Vema.Authorization.Server\appsettings.json" Link="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="IdentityModel" Version="2.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="1.1.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
     <PackageReference Include="xunit" Version="2.2.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Vema.Authorization.Portal\Vema.Authorization.Portal.csproj" />
+    <ProjectReference Include="..\..\src\Vema.Authorization.Server\Vema.Authorization.Server.csproj" />
   </ItemGroup>
 
   <ItemGroup>
