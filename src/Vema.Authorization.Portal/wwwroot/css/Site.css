@@ -1,43 +1,44 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+  margin-top: 65px;
 }
-
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+.navbar-header {
+  position: relative;
+  top: -4px;
 }
-
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+.navbar-brand > .icon-banner {
+  position: relative;
+  top: -2px;
+  display: inline;
 }
-
-/* styles for validation helpers */
-.field-validation-error {
-    color: #b94a48;
+.icon {
+  position: relative;
+  top: -10px;
 }
-
-.field-validation-valid {
-    display: none;
+.logged-out iframe {
+  display: none;
+  width: 0;
+  height: 0;
 }
-
-input.input-validation-error {
-    border: 1px solid #b94a48;
+.page-consent .client-logo {
+  float: left;
 }
-
-input[type="checkbox"].input-validation-error {
-    border: 0 none;
+.page-consent .client-logo img {
+  width: 80px;
+  height: 80px;
 }
-
-.validation-summary-errors {
-    color: #b94a48;
+.page-consent .consent-buttons {
+  margin-top: 25px;
 }
-
-.validation-summary-valid {
-    display: none;
+.page-consent .consent-form .consent-scopecheck {
+  display: inline-block;
+  margin-right: 5px;
 }
-
+.page-consent .consent-form .consent-description {
+  margin-left: 25px;
+}
+.page-consent .consent-form .consent-description label {
+  font-weight: normal;
+}
+.page-consent .consent-form .consent-remember {
+  padding-left: 16px;
+}
