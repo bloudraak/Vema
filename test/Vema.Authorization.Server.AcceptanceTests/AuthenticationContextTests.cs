@@ -29,6 +29,7 @@ using System.Threading.Tasks;
 using IdentityServer4.Endpoints;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Vema.Authorization.Clients;
 using Xunit;
 
 namespace Vema.Authorization.Server.AcceptanceTests

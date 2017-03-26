@@ -25,9 +25,8 @@
 #endregion
 
 using System;
-using IdentityModel.Client;
 
-namespace Vema.Authorization.Server.AcceptanceTests
+namespace Vema.Authorization.Clients
 {
     public class AuthenticationResult
     {
