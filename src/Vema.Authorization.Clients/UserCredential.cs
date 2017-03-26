@@ -24,19 +24,23 @@
 
 #endregion
 
-using System.Threading;
-using System.Threading.Tasks;
+using System;
 
 namespace Vema.Authorization.Clients
 {
-    public interface IAuthenticationContext
+    public class UserCredential
     {
-        string Authority { get; }
+        public UserCredential(string userName, string password)
+        {
+            if (userName == null) throw new ArgumentNullException(nameof(userName));
+            if (password == null) throw new ArgumentNullException(nameof(password));
 
-        Task<AuthenticationResult> AcquireTokenAsync(string resource, ClientCredential clientCredential,
-            CancellationToken cancellationToken = default(CancellationToken));
+            UserName = userName;
+            Password = password;
+        }
 
-        Task<AuthenticationResult> AcquireTokenAsync(string resource, ClientCredential clientCredential, UserCredential userCredential,
-            CancellationToken cancellationToken = default(CancellationToken));
+        public string UserName { get; }
+
+        public string Password { get; }
     }
 }

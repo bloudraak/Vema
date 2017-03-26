@@ -111,5 +111,80 @@ namespace Vema.Authorization.Clients.AcceptanceTests
             Assert.Equal("invalid_client", actual.Message);
             Assert.Equal("invalid_client", actual.ErrorCode);
         }
+
+        [Fact]
+        public async Task AcquireTokenAsync_using_invalid_user_credentials_should_throw()
+        {
+            // Arrange
+            var handler = AuthorizationServer.CreateHandler();
+            var authority = AuthorizationServer.BaseAddress.ToString();
+            var authenticationContext = new AuthenticationContext(authority, handler);
+            var resource = "api1";
+            var credential = new ClientCredential("ro.client", "secret");
+            var userCredential = new UserCredential("bob", "pa$$word");
+
+            // Act
+            AuthenticationException actual = null;
+            try
+            {
+                await authenticationContext.AcquireTokenAsync(resource, credential, userCredential);
+            }
+            catch (AuthenticationException e)
+            {
+                actual = e;
+            }
+
+            // Assert
+            Assert.NotNull(actual);
+            Assert.Equal("invalid_username_or_password", actual.Message);
+            Assert.Equal("invalid_grant", actual.ErrorCode);
+        }
+
+        [Fact]
+        public async Task AcquireTokenAsync_using_unauthorized_client_credentials_should_throw()
+        {
+            // Arrange
+            var handler = AuthorizationServer.CreateHandler();
+            var authority = AuthorizationServer.BaseAddress.ToString();
+            var authenticationContext = new AuthenticationContext(authority, handler);
+            var resource = "api1";
+            var credential = new ClientCredential("client", "secret");
+            var userCredential = new UserCredential("bob", "pa$$word");
+
+            // Act
+            AuthenticationException actual = null;
+            try
+            {
+                await authenticationContext.AcquireTokenAsync(resource, credential, userCredential);
+            }
+            catch (AuthenticationException e)
+            {
+                actual = e;
+            }
+
+            // Assert
+            Assert.NotNull(actual);
+            Assert.Equal("unauthorized_client", actual.Message);
+            Assert.Equal("unauthorized_client", actual.ErrorCode);
+        }
+
+        [Fact]
+        public async Task AcquireTokenAsync_using_user_credentials_should_return_accesstoken()
+        {
+            // Arrange
+            var handler = AuthorizationServer.CreateHandler();
+            var authority = AuthorizationServer.BaseAddress.ToString();
+            var authenticationContext = new AuthenticationContext(authority, handler);
+            var resource = "api1";
+            var credential = new ClientCredential("ro.client", "secret");
+            var userCredential = new UserCredential("bob", "password");
+
+            // Act
+            var response = await authenticationContext.AcquireTokenAsync(resource, credential, userCredential);
+
+            // Assert
+            Assert.NotNull(response);
+            Assert.NotNull(response.AccessToken);
+        }
     }
 }

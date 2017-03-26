@@ -47,17 +47,38 @@ namespace Vema.Authorization.Clients
 
         public string Authority { get; }
 
-        public async Task<AuthenticationResult> AcquireTokenAsync(string resource, ClientCredential credential,
+        public async Task<AuthenticationResult> AcquireTokenAsync(string resource, ClientCredential clientCredential,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (resource == null) throw new ArgumentNullException(nameof(resource));
-            if (credential == null) throw new ArgumentNullException(nameof(credential));
+            if (clientCredential == null) throw new ArgumentNullException(nameof(clientCredential));
 
             var tokenEndpoint = new Uri(new Uri(Authority), "/connect/token");
-            var client = new TokenClient(tokenEndpoint.ToString(), credential.ClientId, credential.ClientSecret, Handler);
+            var client = new TokenClient(tokenEndpoint.ToString(), clientCredential.ClientId, clientCredential.ClientSecret, Handler);
             var response = await client.RequestClientCredentialsAsync(resource, cancellationToken: cancellationToken);
             if (response.IsError)
                 throw new AuthenticationException(response.Error, response.ErrorDescription ?? response.Error);
+            return new AuthenticationResult(response);
+        }
+
+        public async Task<AuthenticationResult> AcquireTokenAsync(string resource, ClientCredential clientCredential, UserCredential userCredential,
+            CancellationToken cancellationToken = new CancellationToken())
+        {
+            if (resource == null) throw new ArgumentNullException(nameof(resource));
+            if (clientCredential == null) throw new ArgumentNullException(nameof(clientCredential));
+            if (userCredential == null) throw new ArgumentNullException(nameof(userCredential));
+
+            var tokenEndpoint = new Uri(new Uri(Authority), "/connect/token");
+            var client = new TokenClient(tokenEndpoint.ToString(), clientCredential.ClientId, clientCredential.ClientSecret, Handler);
+            var response = await client.RequestResourceOwnerPasswordAsync(
+                userCredential.UserName, 
+                userCredential.Password,
+                resource, 
+                cancellationToken: cancellationToken);
+
+            if (response.IsError)
+                throw new AuthenticationException(response.Error, response.ErrorDescription ?? response.Error);
+
             return new AuthenticationResult(response);
         }
     }
