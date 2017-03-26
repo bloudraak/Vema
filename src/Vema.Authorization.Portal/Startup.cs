@@ -24,6 +24,7 @@
 
 #endregion
 
+using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -55,6 +56,7 @@ namespace Vema.Authorization.Portal
         {
             services.AddIdentityServer()
                 .AddTemporarySigningCredential()
+                .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryClients(Config.GetClients())
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddTestUsers(Config.GetUsers());
@@ -81,6 +83,11 @@ namespace Vema.Authorization.Portal
             app.UseIdentityServer();
 
             app.UseStaticFiles();
+
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationScheme = "Cookies"
+            });
 
             app.UseMvc(routes =>
             {

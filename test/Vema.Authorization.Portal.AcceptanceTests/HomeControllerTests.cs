@@ -63,7 +63,7 @@ namespace Vema.Authorization.Portal.AcceptanceTests
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.True(content.Contains("Index"));
+            Assert.True(content.Contains("<h1>Vema Authorization Server</h1>"));
         }
     }
 }

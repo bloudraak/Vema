@@ -24,6 +24,7 @@
 
 #endregion
 
+using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -68,6 +69,25 @@ namespace Vema.Management.Portal
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationScheme = "Cookies"
+            });
+
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+            app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
+            {
+                AuthenticationScheme = "oidc",
+                SignInScheme = "Cookies",
+
+                Authority = "http://localhost:5000",
+                RequireHttpsMetadata = false,
+
+                ClientId = "mvc",
+                SaveTokens = true
+            });
 
             app.UseStaticFiles();
 
