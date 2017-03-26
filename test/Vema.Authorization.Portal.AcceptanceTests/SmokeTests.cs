@@ -33,9 +33,9 @@ using Xunit.Abstractions;
 
 namespace Vema.Authorization.Portal.AcceptanceTests
 {
-    public class SmokeTests2 : IDisposable
+    public class IdentityServerSmokeTests : IDisposable
     {
-        public SmokeTests2(ITestOutputHelper output)
+        public IdentityServerSmokeTests(ITestOutputHelper output)
         {
             _authorizationServer = new TestServerFixture<Startup>(output, new Uri("http://localhost:5000"));
         }
