@@ -25,6 +25,7 @@
     <ProjectReference Include="..\..\src\Vema.Authorization.Clients\Vema.Authorization.Clients.csproj" />
     <ProjectReference Include="..\..\src\Vema.Authorization.Portal\Vema.Authorization.Portal.csproj" />
     <ProjectReference Include="..\..\src\Vema.Authorization.Server\Vema.Authorization.Server.csproj" />
+    <ProjectReference Include="..\..\vendors\Microsoft.Extensions.Logging.Testing\Microsoft.Extensions.Logging.Testing.csproj" />
   </ItemGroup>
 
   <ItemGroup>

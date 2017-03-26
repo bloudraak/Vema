@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -31,17 +32,20 @@ using IdentityModel.Client;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Xunit;
+using Xunit.Abstractions;
 
-namespace Vema.Authorization.Portal.AcceptanceTests
+namespace Vema.Authorization.Portal.AcceptanceTests 
 {
-    public class SmokeTests
+    public class SmokeTests : IDisposable
     {
         private readonly TestServer _server;
         private HttpClient _client;
         private HttpMessageHandler _handler;
+        private readonly ITestOutputHelper output;
 
-        public SmokeTests()
+        public SmokeTests(ITestOutputHelper output)
         {
+            this.output = output;
             var webHostBuilder = new WebHostBuilder().UseStartup<Startup>();
             _server = new TestServer(webHostBuilder);
             _handler = _server.CreateHandler();
@@ -85,12 +89,12 @@ namespace Vema.Authorization.Portal.AcceptanceTests
             Assert.Equal("http://localhost:5000/connect/revocation", disco.RevocationEndpoint);
             Assert.Equal("http://localhost:5000/connect/token", disco.TokenEndpoint);
             Assert.Equal("http://localhost:5000/connect/userinfo", disco.UserInfoEndpoint);
-            
         }
 
-        //public void Dispose()
-        //{
-        //    _client.Dispose();
-        //}
+        public void Dispose()
+        {
+            _server?.Dispose();
+            _client?.Dispose();
+        }
     }
 }

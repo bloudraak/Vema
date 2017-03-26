@@ -27,13 +27,45 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Vema.Authorization.Portal;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Vema.Authorization.Clients.AcceptanceTests
 {
     public class AuthenticationContextTests
     {
-        private TestServer authorizationServer;
+        public AuthenticationContextTests(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
+        private TestServer _authorizationServer;
+        private readonly ITestOutputHelper _output;
+
+        private TestServer AuthorizationServer
+        {
+            get
+            {
+                if (_authorizationServer == null)
+                {
+                    var builder = new WebHostBuilder()
+                        .UseStartup<Startup>();
+
+                    builder.ConfigureServices(c =>
+                    {
+                        var provider = c.BuildServiceProvider();
+                        var loggerFactory = provider.GetService<ILoggerFactory>();
+                        loggerFactory.AddXunit(_output);
+                    });
+
+                    _authorizationServer = new TestServer(builder);
+                }
+                return _authorizationServer;
+            }
+        }
 
         [Fact]
         public async Task AcquireTokenAsync_using_client_credentials_should_return_accesstoken()
@@ -78,20 +110,6 @@ namespace Vema.Authorization.Clients.AcceptanceTests
             Assert.NotNull(actual);
             Assert.Equal("invalid_client", actual.Message);
             Assert.Equal("invalid_client", actual.ErrorCode);
-        }
-
-
-        private TestServer AuthorizationServer
-        {
-            get
-            {
-                if (this.authorizationServer == null)
-                {
-                    var authorizationWebHostBuilder = new WebHostBuilder().UseStartup<Portal.Startup>();
-                    this.authorizationServer = new TestServer(authorizationWebHostBuilder);
-                }
-                return this.authorizationServer;
-            }
         }
     }
 }

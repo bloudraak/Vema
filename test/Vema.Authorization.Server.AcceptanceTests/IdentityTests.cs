@@ -1,19 +1,60 @@
-using System.Net.Http;
-using System.Net.Http.Headers;
+#region License
+
+// The MIT License (MIT)
+// 
+// Copyright (c) 2017 Werner Strydom
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+#endregion
+
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Vema.Authorization.Clients;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Vema.Authorization.Server.AcceptanceTests
 {
-    public class IdentityTests
+    public class IdentityTests : IDisposable
     {
+        public void Dispose()
+        {
+            _authorizationServer?.Dispose();
+            _authorizationServer = null;
+            _testServer?.Dispose();
+            _testServer = null;
+        }
+
         private TestServer _authorizationServer;
         private TestServer _testServer;
+        private readonly ITestOutputHelper _output;
+
+        public IdentityTests(ITestOutputHelper output)
+        {
+            this._output = output;
+        }
 
         private TestServer AuthorizationServer
         {
@@ -23,6 +64,13 @@ namespace Vema.Authorization.Server.AcceptanceTests
                 {
                     var builder = new WebHostBuilder()
                         .UseStartup<Portal.Startup>();
+
+                    builder.ConfigureServices(c =>
+                    {
+                        var provider = c.BuildServiceProvider();
+                        var loggerFactory = provider.GetService<ILoggerFactory>();
+                        loggerFactory.AddXunit(_output);
+                    });
 
                     _authorizationServer = new TestServer(builder);
                 }
@@ -46,10 +94,17 @@ namespace Vema.Authorization.Server.AcceptanceTests
                         IntrospectionDiscoveryHandler = AuthorizationServer.CreateHandler(),
                         IntrospectionBackChannelHandler = AuthorizationServer.CreateHandler(),
                         RequireHttpsMetadata = false,
-                        ApiName = "api1",
+                        ApiName = "api1"
                     };
 
                     builder.ConfigureServices(c => c.AddSingleton(options));
+
+                    builder.ConfigureServices(c =>
+                    {
+                        var provider = c.BuildServiceProvider();
+                        var loggerFactory = provider.GetService<ILoggerFactory>();
+                        loggerFactory.AddXunit(_output);
+                    });
 
                     _testServer = new TestServer(builder);
                 }
@@ -80,17 +135,10 @@ namespace Vema.Authorization.Server.AcceptanceTests
         {
             // Arrange
             var tokenCredential = await CreateTokenCredentialAsync();
-
-            var httpClient = new HttpClient(TestServer.CreateHandler());
-            var baseAddress = TestServer.BaseAddress;
-            httpClient.BaseAddress = baseAddress;
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(tokenCredential.Scheme,
-                tokenCredential.Token);
+            var client = new IdentityClient(tokenCredential, TestServer.BaseAddress, TestServer.CreateHandler());
 
             // Act
-            var message = await httpClient.GetAsync("/identity");
-            message.EnsureSuccessStatusCode();
-            var s = await message.Content.ReadAsStringAsync();
+            var s = await client.GetAsync();
 
             // Assert
             Assert.NotNull(s);

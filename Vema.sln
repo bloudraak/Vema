@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vema.Authorization.Clients"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vema.Authorization.Clients.AcceptanceTests", "test\Vema.Authorization.Clients.AcceptanceTests\Vema.Authorization.Clients.AcceptanceTests.csproj", "{78DA6E86-6714-4B77-AC7D-4167957707DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Extensions.Logging.Testing", "vendors\Microsoft.Extensions.Logging.Testing\Microsoft.Extensions.Logging.Testing.csproj", "{775571FE-B70E-4331-9840-75CADA61541B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{78DA6E86-6714-4B77-AC7D-4167957707DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78DA6E86-6714-4B77-AC7D-4167957707DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78DA6E86-6714-4B77-AC7D-4167957707DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{775571FE-B70E-4331-9840-75CADA61541B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{775571FE-B70E-4331-9840-75CADA61541B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{775571FE-B70E-4331-9840-75CADA61541B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{775571FE-B70E-4331-9840-75CADA61541B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
