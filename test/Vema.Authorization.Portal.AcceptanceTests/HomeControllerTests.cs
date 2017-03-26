@@ -25,51 +25,45 @@
 #endregion
 
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using IdentityModel.Client;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Vema.Authorization.Portal.AcceptanceTests
 {
-    public class SmokeTests2 : IDisposable
+    public class HomeControllerTests : IDisposable
     {
-        public SmokeTests2(ITestOutputHelper output)
+        public HomeControllerTests(ITestOutputHelper output)
         {
             _authorizationServer = new TestServerFixture<Startup>(output, new Uri("http://localhost:5000"));
+            _client = _authorizationServer.TestServer.CreateClient();
         }
 
         public void Dispose()
         {
+            _client?.Dispose();
             _authorizationServer?.Dispose();
         }
 
         private readonly TestServerFixture<Startup> _authorizationServer;
+        private readonly HttpClient _client;
+
 
         [Fact]
-        public async Task OpenIdConfiguration()
+        public async Task Index_should_return_ok()
         {
             // Arrange
-            var authority = _authorizationServer.TestServer.BaseAddress.ToString();
-            var httpMessageHandler = _authorizationServer.TestServer.CreateHandler();
-            var client = new DiscoveryClient(authority, httpMessageHandler);
+            var requestUri = "/";
 
             // Act
-            var disco = await client.GetAsync();
+            var response = await _client.GetAsync(requestUri);
+            var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(null, disco.Error);
-            Assert.Equal("http://localhost:5000/connect/authorize", disco.AuthorizeEndpoint);
-            Assert.Equal("http://localhost:5000/connect/checksession", disco.CheckSessionIframe);
-            Assert.Equal("http://localhost:5000/connect/endsession", disco.EndSessionEndpoint);
-            Assert.Equal("http://localhost:5000/connect/introspect", disco.IntrospectionEndpoint);
-            Assert.Equal("http://localhost:5000", disco.Issuer);
-            Assert.Equal("http://localhost:5000/.well-known/openid-configuration/jwks", disco.JwksUri);
-            Assert.Equal(null, disco.RegistrationEndpoint);
-            Assert.Equal("http://localhost:5000/connect/revocation", disco.RevocationEndpoint);
-            Assert.Equal("http://localhost:5000/connect/token", disco.TokenEndpoint);
-            Assert.Equal("http://localhost:5000/connect/userinfo", disco.UserInfoEndpoint);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.True(content.Contains("Index"));
         }
     }
 }
