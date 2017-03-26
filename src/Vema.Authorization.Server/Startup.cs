@@ -66,6 +66,7 @@ namespace Vema.Authorization.Server
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            app.UseStatusCodePages();
 
             var options = app.ApplicationServices.GetService<IdentityServerAuthenticationOptions>();
             app.UseIdentityServerAuthentication(options);

@@ -1,23 +1,44 @@
-﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿#region License
 
+// The MIT License (MIT)
+// 
+// Copyright (c) 2017 Werner Strydom
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 
+#endregion
+
+using System.Linq;
+using System.Threading.Tasks;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using Microsoft.Extensions.Logging;
-using System.Linq;
-using System.Threading.Tasks;
-using System;
 
 namespace IdentityServer4.Quickstart.UI
 {
     public class ConsentService
     {
         private readonly IClientStore _clientStore;
-        private readonly IResourceStore _resourceStore;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly ILogger _logger;
+        private readonly IResourceStore _resourceStore;
 
         public ConsentService(
             IIdentityServerInteractionService interaction,
@@ -39,20 +60,14 @@ namespace IdentityServer4.Quickstart.UI
 
             // user clicked 'no' - send back the standard 'access_denied' response
             if (model.Button == "no")
-            {
                 grantedConsent = ConsentResponse.Denied;
-            }
             // user clicked 'yes' - validate the data
             else if (model.Button == "yes" && model != null)
-            {
-                // if the user consented to some scope, build the response model
                 if (model.ScopesConsented != null && model.ScopesConsented.Any())
                 {
                     var scopes = model.ScopesConsented;
                     if (ConsentOptions.EnableOfflineAccess == false)
-                    {
                         scopes = scopes.Where(x => x != IdentityServerConstants.StandardScopes.OfflineAccess);
-                    }
 
                     grantedConsent = new ConsentResponse
                     {
@@ -64,11 +79,8 @@ namespace IdentityServer4.Quickstart.UI
                 {
                     result.ValidationError = ConsentOptions.MustChooseOneErrorMessage;
                 }
-            }
             else
-            {
                 result.ValidationError = ConsentOptions.InvalidSelectionErrorMessage;
-            }
 
             if (grantedConsent != null)
             {
@@ -101,13 +113,9 @@ namespace IdentityServer4.Quickstart.UI
                 {
                     var resources = await _resourceStore.FindEnabledResourcesByScopeAsync(request.ScopesRequested);
                     if (resources != null && (resources.IdentityResources.Any() || resources.ApiResources.Any()))
-                    {
                         return CreateConsentViewModel(model, returnUrl, request, client, resources);
-                    }
-                    else
-                    {
-                        _logger.LogError("No scopes matching: {0}", request.ScopesRequested.Aggregate((x, y) => x + ", " + y));
-                    }
+                    _logger.LogError("No scopes matching: {0}",
+                        request.ScopesRequested.Aggregate((x, y) => x + ", " + y));
                 }
                 else
                 {
@@ -123,8 +131,8 @@ namespace IdentityServer4.Quickstart.UI
         }
 
         private ConsentViewModel CreateConsentViewModel(
-            ConsentInputModel model, string returnUrl, 
-            AuthorizationRequest request, 
+            ConsentInputModel model, string returnUrl,
+            AuthorizationRequest request,
             Client client, Resources resources)
         {
             var vm = new ConsentViewModel();
@@ -138,14 +146,20 @@ namespace IdentityServer4.Quickstart.UI
             vm.ClientLogoUrl = client.LogoUri;
             vm.AllowRememberConsent = client.AllowRememberConsent;
 
-            vm.IdentityScopes = resources.IdentityResources.Select(x => CreateScopeViewModel(x, vm.ScopesConsented.Contains(x.Name) || model == null)).ToArray();
-            vm.ResourceScopes = resources.ApiResources.SelectMany(x => x.Scopes).Select(x => CreateScopeViewModel(x, vm.ScopesConsented.Contains(x.Name) || model == null)).ToArray();
+            vm.IdentityScopes =
+                resources.IdentityResources.Select(
+                    x => CreateScopeViewModel(x, vm.ScopesConsented.Contains(x.Name) || model == null)).ToArray();
+            vm.ResourceScopes =
+                resources.ApiResources.SelectMany(x => x.Scopes)
+                    .Select(x => CreateScopeViewModel(x, vm.ScopesConsented.Contains(x.Name) || model == null))
+                    .ToArray();
             if (ConsentOptions.EnableOfflineAccess && resources.OfflineAccess)
-            {
-                vm.ResourceScopes = vm.ResourceScopes.Union(new ScopeViewModel[] {
-                    GetOfflineAccessScope(vm.ScopesConsented.Contains(IdentityServerConstants.StandardScopes.OfflineAccess) || model == null)
+                vm.ResourceScopes = vm.ResourceScopes.Union(new[]
+                {
+                    GetOfflineAccessScope(
+                        vm.ScopesConsented.Contains(IdentityServerConstants.StandardScopes.OfflineAccess) ||
+                        model == null)
                 });
-            }
 
             return vm;
         }
@@ -159,7 +173,7 @@ namespace IdentityServer4.Quickstart.UI
                 Description = identity.Description,
                 Emphasize = identity.Emphasize,
                 Required = identity.Required,
-                Checked = check || identity.Required,
+                Checked = check || identity.Required
             };
         }
 
@@ -172,7 +186,7 @@ namespace IdentityServer4.Quickstart.UI
                 Description = scope.Description,
                 Emphasize = scope.Emphasize,
                 Required = scope.Required,
-                Checked = check || scope.Required,
+                Checked = check || scope.Required
             };
         }
 
@@ -189,4 +203,3 @@ namespace IdentityServer4.Quickstart.UI
         }
     }
 }
-

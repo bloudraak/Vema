@@ -59,6 +59,7 @@ namespace Vema.Management.Portal
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            app.UseStatusCodePages();
 
             if (env.IsDevelopment())
             {

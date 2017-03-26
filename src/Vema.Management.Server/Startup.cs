@@ -28,6 +28,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 
 namespace Vema.Management.Server
@@ -51,6 +52,13 @@ namespace Vema.Management.Server
         {
             // Add framework services.
             services.AddMvc();
+
+            services.TryAddSingleton(new IdentityServerAuthenticationOptions
+            {
+                Authority = "http://localhost:5000",
+                RequireHttpsMetadata = false,
+                ApiName = "api1"
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +66,10 @@ namespace Vema.Management.Server
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            app.UseStatusCodePages();
+
+            var options = app.ApplicationServices.GetService<IdentityServerAuthenticationOptions>();
+            app.UseIdentityServerAuthentication(options);
 
             app.UseMvc();
         }

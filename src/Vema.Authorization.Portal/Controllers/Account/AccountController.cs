@@ -1,35 +1,59 @@
-﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿#region License
 
+// The MIT License (MIT)
+// 
+// Copyright (c) 2017 Werner Strydom
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 
-using IdentityModel;
-using IdentityServer4.Services;
-using IdentityServer4.Stores;
-using IdentityServer4.Test;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Authentication;
-using Microsoft.AspNetCore.Mvc;
+#endregion
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using IdentityModel;
+using IdentityServer4.Services;
+using IdentityServer4.Stores;
+using IdentityServer4.Test;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Authentication;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityServer4.Quickstart.UI
 {
     /// <summary>
-    /// This sample controller implements a typical login/logout/provision workflow for local and external accounts.
-    /// The login service encapsulates the interactions with the user data store. This data store is in-memory only and cannot be used for production!
-    /// The interaction service provides a way for the UI to communicate with identityserver for validation and context retrieval
+    ///     This sample controller implements a typical login/logout/provision workflow for local and external accounts.
+    ///     The login service encapsulates the interactions with the user data store. This data store is in-memory only and
+    ///     cannot be used for production!
+    ///     The interaction service provides a way for the UI to communicate with identityserver for validation and context
+    ///     retrieval
     /// </summary>
     [SecurityHeaders]
     public class AccountController : Controller
     {
-        private readonly TestUserStore _users;
-        private readonly IIdentityServerInteractionService _interaction;
         private readonly AccountService _account;
+        private readonly IIdentityServerInteractionService _interaction;
+        private readonly TestUserStore _users;
 
         public AccountController(
             IIdentityServerInteractionService interaction,
@@ -44,7 +68,7 @@ namespace IdentityServer4.Quickstart.UI
         }
 
         /// <summary>
-        /// Show login page
+        ///     Show login page
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> Login(string returnUrl)
@@ -52,16 +76,13 @@ namespace IdentityServer4.Quickstart.UI
             var vm = await _account.BuildLoginViewModelAsync(returnUrl);
 
             if (vm.IsExternalLoginOnly)
-            {
-                // only one option for logging in
                 return await ExternalLogin(vm.ExternalLoginScheme, returnUrl);
-            }
 
             return View(vm);
         }
 
         /// <summary>
-        /// Handle postback from username/password login
+        ///     Handle postback from username/password login
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -76,13 +97,12 @@ namespace IdentityServer4.Quickstart.UI
                     // only set explicit expiration here if persistent. 
                     // otherwise we reply upon expiration configured in cookie middleware.
                     if (AccountOptions.AllowRememberLogin && model.RememberLogin)
-                    {
                         props = new AuthenticationProperties
                         {
                             IsPersistent = true,
                             ExpiresUtc = DateTimeOffset.UtcNow.Add(AccountOptions.RememberMeLoginDuration)
                         };
-                    };
+                    ;
 
                     // issue authentication cookie with subject ID and username
                     var user = _users.FindByUsername(model.Username);
@@ -90,9 +110,7 @@ namespace IdentityServer4.Quickstart.UI
 
                     // make sure the returnUrl is still valid, and if yes - redirect back to authorize endpoint
                     if (_interaction.IsValidReturnUrl(model.ReturnUrl))
-                    {
                         return Redirect(model.ReturnUrl);
-                    }
 
                     return Redirect("~/");
                 }
@@ -106,7 +124,7 @@ namespace IdentityServer4.Quickstart.UI
         }
 
         /// <summary>
-        /// Show logout page
+        ///     Show logout page
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> Logout(string logoutId)
@@ -114,16 +132,13 @@ namespace IdentityServer4.Quickstart.UI
             var vm = await _account.BuildLogoutViewModelAsync(logoutId);
 
             if (vm.ShowLogoutPrompt == false)
-            {
-                // no need to show prompt
                 return await Logout(vm);
-            }
 
             return View(vm);
         }
 
         /// <summary>
-        /// Handle logout page postback
+        ///     Handle logout page postback
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -132,17 +147,17 @@ namespace IdentityServer4.Quickstart.UI
             var vm = await _account.BuildLoggedOutViewModelAsync(model.LogoutId);
             if (vm.TriggerExternalSignout)
             {
-                string url = Url.Action("Logout", new { logoutId = vm.LogoutId });
+                var url = Url.Action("Logout", new {logoutId = vm.LogoutId});
                 try
                 {
                     // hack: try/catch to handle social providers that throw
-                    await HttpContext.Authentication.SignOutAsync(vm.ExternalAuthenticationScheme, 
-                        new AuthenticationProperties { RedirectUri = url });
+                    await HttpContext.Authentication.SignOutAsync(vm.ExternalAuthenticationScheme,
+                        new AuthenticationProperties {RedirectUri = url});
                 }
-                catch(NotSupportedException) // this is for the external providers that don't have signout
+                catch (NotSupportedException) // this is for the external providers that don't have signout
                 {
                 }
-                catch(InvalidOperationException) // this is for Windows/Negotiate
+                catch (InvalidOperationException) // this is for Windows/Negotiate
                 {
                 }
             }
@@ -154,17 +169,15 @@ namespace IdentityServer4.Quickstart.UI
         }
 
         /// <summary>
-        /// initiate roundtrip to external authentication provider
+        ///     initiate roundtrip to external authentication provider
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> ExternalLogin(string provider, string returnUrl)
         {
-            returnUrl = Url.Action("ExternalLoginCallback", new { returnUrl = returnUrl });
+            returnUrl = Url.Action("ExternalLoginCallback", new {returnUrl});
 
             // windows authentication is modeled as external in the asp.net core authentication manager, so we need special handling
             if (AccountOptions.WindowsAuthenticationSchemes.Contains(provider))
-            {
-                // but they don't support the redirect uri, so this URL is re-triggered when we call challenge
                 if (HttpContext.User is WindowsPrincipal)
                 {
                     var props = new AuthenticationProperties();
@@ -174,7 +187,8 @@ namespace IdentityServer4.Quickstart.UI
                     id.AddClaim(new Claim(ClaimTypes.NameIdentifier, HttpContext.User.Identity.Name));
                     id.AddClaim(new Claim(ClaimTypes.Name, HttpContext.User.Identity.Name));
 
-                    await HttpContext.Authentication.SignInAsync(IdentityServerConstants.ExternalCookieAuthenticationScheme, new ClaimsPrincipal(id), props);
+                    await HttpContext.Authentication.SignInAsync(
+                        IdentityServerConstants.ExternalCookieAuthenticationScheme, new ClaimsPrincipal(id), props);
                     return Redirect(returnUrl);
                 }
                 else
@@ -182,32 +196,28 @@ namespace IdentityServer4.Quickstart.UI
                     // this triggers all of the windows auth schemes we're supporting so the browser can use what it supports
                     return new ChallengeResult(AccountOptions.WindowsAuthenticationSchemes);
                 }
-            }
-            else
+            // start challenge and roundtrip the return URL
+            var props = new AuthenticationProperties
             {
-                // start challenge and roundtrip the return URL
-                var props = new AuthenticationProperties
-                {
-                    RedirectUri = returnUrl,
-                    Items = { { "scheme", provider } }
-                };
-                return new ChallengeResult(provider, props);
-            }
+                RedirectUri = returnUrl,
+                Items = {{"scheme", provider}}
+            };
+            return new ChallengeResult(provider, props);
         }
 
         /// <summary>
-        /// Post processing of external authentication
+        ///     Post processing of external authentication
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> ExternalLoginCallback(string returnUrl)
         {
             // read external identity from the temporary cookie
-            var info = await HttpContext.Authentication.GetAuthenticateInfoAsync(IdentityServerConstants.ExternalCookieAuthenticationScheme);
+            var info =
+                await HttpContext.Authentication.GetAuthenticateInfoAsync(
+                    IdentityServerConstants.ExternalCookieAuthenticationScheme);
             var tempUser = info?.Principal;
             if (tempUser == null)
-            {
                 throw new Exception("External authentication error");
-            }
 
             // retrieve claims of the external user
             var claims = tempUser.Claims.ToList();
@@ -216,13 +226,9 @@ namespace IdentityServer4.Quickstart.UI
             // depending on the external provider, some other claim type might be used
             var userIdClaim = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Subject);
             if (userIdClaim == null)
-            {
                 userIdClaim = claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
-            }
             if (userIdClaim == null)
-            {
                 throw new Exception("Unknown userid");
-            }
 
             // remove the user id claim from the claims collection and move to the userId property
             // also set the name of the external authentication provider
@@ -233,20 +239,14 @@ namespace IdentityServer4.Quickstart.UI
             // check if the external user is already provisioned
             var user = _users.FindByExternalProvider(provider, userId);
             if (user == null)
-            {
-                // this sample simply auto-provisions new external user
-                // another common approach is to start a registrations workflow first
                 user = _users.AutoProvisionUser(provider, userId, claims);
-            }
 
             var additionalClaims = new List<Claim>();
 
             // if the external system sent a session id claim, copy it over
             var sid = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.SessionId);
             if (sid != null)
-            {
                 additionalClaims.Add(new Claim(JwtClaimTypes.SessionId, sid.Value));
-            }
 
             // if the external provider issued an id_token, we'll keep it for signout
             AuthenticationProperties props = null;
@@ -254,20 +254,19 @@ namespace IdentityServer4.Quickstart.UI
             if (id_token != null)
             {
                 props = new AuthenticationProperties();
-                props.StoreTokens(new[] { new AuthenticationToken { Name = "id_token", Value = id_token } });
+                props.StoreTokens(new[] {new AuthenticationToken {Name = "id_token", Value = id_token}});
             }
 
             // issue authentication cookie for user
-            await HttpContext.Authentication.SignInAsync(user.SubjectId, user.Username, provider, props, additionalClaims.ToArray());
+            await HttpContext.Authentication.SignInAsync(user.SubjectId, user.Username, provider, props,
+                additionalClaims.ToArray());
 
             // delete temporary cookie used during external authentication
             await HttpContext.Authentication.SignOutAsync(IdentityServerConstants.ExternalCookieAuthenticationScheme);
 
             // validate return URL and redirect back to authorization endpoint
             if (_interaction.IsValidReturnUrl(returnUrl))
-            {
                 return Redirect(returnUrl);
-            }
 
             return Redirect("~/");
         }
