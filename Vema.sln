@@ -35,6 +35,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vema.Management.Portal", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vema.Management.Server", "src\Vema.Management.Server\Vema.Management.Server.csproj", "{8B20CBC2-0DC1-45B3-AEF3-8208623F981B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vema.Management.Portal.AcceptanceTests", "test\Vema.Management.Portal.AcceptanceTests\Vema.Management.Portal.AcceptanceTests.csproj", "{F40385DD-27C7-4DF5-9810-08BA62C77118}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vema.Management.Server.AcceptanceTests", "test\Vema.Management.Server.AcceptanceTests\Vema.Management.Server.AcceptanceTests.csproj", "{5BA7918F-893E-48E6-B13F-61644A47A801}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vema.Portal.AcceptanceTests", "test\Vema.Portal.AcceptanceTests\Vema.Portal.AcceptanceTests.csproj", "{C554A618-9225-4F86-BC85-EAD65FD517A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vema.Server.AcceptanceTests", "test\Vema.Server.AcceptanceTests\Vema.Server.AcceptanceTests.csproj", "{019E1C20-3490-4F32-85DC-3678E4BC54FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +93,22 @@ Global
 		{8B20CBC2-0DC1-45B3-AEF3-8208623F981B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B20CBC2-0DC1-45B3-AEF3-8208623F981B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B20CBC2-0DC1-45B3-AEF3-8208623F981B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F40385DD-27C7-4DF5-9810-08BA62C77118}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F40385DD-27C7-4DF5-9810-08BA62C77118}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F40385DD-27C7-4DF5-9810-08BA62C77118}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F40385DD-27C7-4DF5-9810-08BA62C77118}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BA7918F-893E-48E6-B13F-61644A47A801}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BA7918F-893E-48E6-B13F-61644A47A801}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BA7918F-893E-48E6-B13F-61644A47A801}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BA7918F-893E-48E6-B13F-61644A47A801}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C554A618-9225-4F86-BC85-EAD65FD517A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C554A618-9225-4F86-BC85-EAD65FD517A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C554A618-9225-4F86-BC85-EAD65FD517A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C554A618-9225-4F86-BC85-EAD65FD517A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{019E1C20-3490-4F32-85DC-3678E4BC54FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{019E1C20-3490-4F32-85DC-3678E4BC54FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{019E1C20-3490-4F32-85DC-3678E4BC54FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{019E1C20-3490-4F32-85DC-3678E4BC54FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
