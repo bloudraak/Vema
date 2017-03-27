@@ -27,9 +27,10 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using IdentityModel;
+using IdentityServer4;
 using IdentityServer4.Test;
 
-namespace IdentityServer4.Quickstart.UI
+namespace Vema.Authorization.Portal.ViewModels
 {
     public class TestUsers
     {

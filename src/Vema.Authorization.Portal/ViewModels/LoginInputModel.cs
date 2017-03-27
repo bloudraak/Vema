@@ -24,17 +24,19 @@
 
 #endregion
 
-namespace IdentityServer4.Quickstart.UI
+using System.ComponentModel.DataAnnotations;
+
+namespace Vema.Authorization.Portal.ViewModels
 {
-    public class ConsentOptions
+    public class LoginInputModel
     {
-        public static bool EnableOfflineAccess = true;
-        public static string OfflineAccessDisplayName = "Offline Access";
+        [Required]
+        public string Username { get; set; }
 
-        public static string OfflineAccessDescription =
-            "Access to your applications and resources, even when you are offline";
+        [Required]
+        public string Password { get; set; }
 
-        public static readonly string MustChooseOneErrorMessage = "You must pick at least one permission";
-        public static readonly string InvalidSelectionErrorMessage = "Invalid selection";
+        public bool RememberLogin { get; set; }
+        public string ReturnUrl { get; set; }
     }
 }

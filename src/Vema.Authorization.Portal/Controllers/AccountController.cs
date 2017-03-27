@@ -31,6 +31,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using IdentityModel;
+using IdentityServer4;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using IdentityServer4.Test;
@@ -38,8 +39,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Vema.Authorization.Portal.ViewModels;
 
-namespace IdentityServer4.Quickstart.UI
+namespace Vema.Authorization.Portal.Controllers
 {
     /// <summary>
     ///     This sample controller implements a typical login/logout/provision workflow for local and external accounts.
@@ -177,10 +179,11 @@ namespace IdentityServer4.Quickstart.UI
             returnUrl = Url.Action("ExternalLoginCallback", new {returnUrl});
 
             // windows authentication is modeled as external in the asp.net core authentication manager, so we need special handling
+            AuthenticationProperties props;
             if (AccountOptions.WindowsAuthenticationSchemes.Contains(provider))
                 if (HttpContext.User is WindowsPrincipal)
                 {
-                    var props = new AuthenticationProperties();
+                    props = new AuthenticationProperties();
                     props.Items.Add("scheme", AccountOptions.WindowsAuthenticationProviderName);
 
                     var id = new ClaimsIdentity(provider);
@@ -196,8 +199,9 @@ namespace IdentityServer4.Quickstart.UI
                     // this triggers all of the windows auth schemes we're supporting so the browser can use what it supports
                     return new ChallengeResult(AccountOptions.WindowsAuthenticationSchemes);
                 }
+
             // start challenge and roundtrip the return URL
-            var props = new AuthenticationProperties
+            props = new AuthenticationProperties
             {
                 RedirectUri = returnUrl,
                 Items = {{"scheme", provider}}

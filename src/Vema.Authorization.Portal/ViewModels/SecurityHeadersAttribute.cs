@@ -27,7 +27,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace IdentityServer4.Quickstart.UI
+namespace Vema.Authorization.Portal.ViewModels
 {
     public class SecurityHeadersAttribute : ActionFilterAttribute
     {

@@ -24,18 +24,17 @@
 
 #endregion
 
-namespace IdentityServer4.Quickstart.UI
+namespace Vema.Authorization.Portal.ViewModels
 {
-    public class LoggedOutViewModel
+    public class ConsentOptions
     {
-        public string PostLogoutRedirectUri { get; set; }
-        public string ClientName { get; set; }
-        public string SignOutIframeUrl { get; set; }
+        public static bool EnableOfflineAccess = true;
+        public static string OfflineAccessDisplayName = "Offline Access";
 
-        public bool AutomaticRedirectAfterSignOut { get; set; }
+        public static string OfflineAccessDescription =
+            "Access to your applications and resources, even when you are offline";
 
-        public string LogoutId { get; set; }
-        public bool TriggerExternalSignout => ExternalAuthenticationScheme != null;
-        public string ExternalAuthenticationScheme { get; set; }
+        public static readonly string MustChooseOneErrorMessage = "You must pick at least one permission";
+        public static readonly string InvalidSelectionErrorMessage = "Invalid selection";
     }
 }

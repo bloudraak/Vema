@@ -24,10 +24,15 @@
 
 #endregion
 
-namespace IdentityServer4.Quickstart.UI
+namespace Vema.Authorization.Portal.ViewModels
 {
-    public class LogoutViewModel : LogoutInputModel
+    public class ScopeViewModel
     {
-        public bool ShowLogoutPrompt { get; set; }
+        public string Name { get; set; }
+        public string DisplayName { get; set; }
+        public string Description { get; set; }
+        public bool Emphasize { get; set; }
+        public bool Required { get; set; }
+        public bool Checked { get; set; }
     }
 }

@@ -24,17 +24,10 @@
 
 #endregion
 
-namespace IdentityServer4.Quickstart.UI
+namespace Vema.Authorization.Portal.ViewModels
 {
-    public class ProcessConsentResult
+    public class LogoutInputModel
     {
-        public bool IsRedirect => RedirectUri != null;
-        public string RedirectUri { get; set; }
-
-        public bool ShowView => ViewModel != null;
-        public ConsentViewModel ViewModel { get; set; }
-
-        public bool HasValidationError => ValidationError != null;
-        public string ValidationError { get; set; }
+        public string LogoutId { get; set; }
     }
 }

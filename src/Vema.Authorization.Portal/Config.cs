@@ -25,6 +25,7 @@
 #endregion
 
 using System.Collections.Generic;
+using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 
@@ -47,17 +48,11 @@ namespace Vema.Authorization.Portal
                 new Client
                 {
                     ClientId = "client",
-
-                    // no interactive user, use the clientid/secret for authentication
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
-
-                    // secret for authentication
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())
                     },
-
-                    // scopes that client has access to
                     AllowedScopes = {"api1"}
                 },
                 new Client
@@ -69,6 +64,32 @@ namespace Vema.Authorization.Portal
                         new Secret("secret".Sha256())
                     },
                     AllowedScopes = {"api1"}
+                },
+                new Client
+                {
+                    ClientId = "ab83d691-b036-4acc-93eb-80866f8f1c3c",
+                    ClientName = "Vema Portal",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    RedirectUris = {"http://localhost:5004/signin-oidc"},
+                    PostLogoutRedirectUris = {"http://localhost:5004/signout-callback-oidc"},
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile
+                    }
+                },
+                new Client
+                {
+                    ClientId = "87db2572-fe1e-4411-af9a-cb0acd26ff45",
+                    ClientName = "Vema Management Portal",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    RedirectUris = {"http://localhost:5002/signin-oidc"},
+                    PostLogoutRedirectUris = {"http://localhost:5002/signout-callback-oidc"},
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile
+                    }
                 }
             };
         }

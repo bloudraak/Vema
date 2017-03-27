@@ -82,11 +82,9 @@ namespace Vema.Management.Portal
             {
                 AuthenticationScheme = "oidc",
                 SignInScheme = "Cookies",
-
                 Authority = "http://localhost:5000",
                 RequireHttpsMetadata = false,
-
-                ClientId = "mvc",
+                ClientId = "87db2572-fe1e-4411-af9a-cb0acd26ff45",
                 SaveTokens = true
             });
 

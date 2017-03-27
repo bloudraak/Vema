@@ -24,19 +24,18 @@
 
 #endregion
 
-using System.ComponentModel.DataAnnotations;
-
-namespace IdentityServer4.Quickstart.UI
+namespace Vema.Authorization.Portal.ViewModels
 {
-    public class LoginInputModel
+    public class LoggedOutViewModel
     {
-        [Required]
-        public string Username { get; set; }
+        public string PostLogoutRedirectUri { get; set; }
+        public string ClientName { get; set; }
+        public string SignOutIframeUrl { get; set; }
 
-        [Required]
-        public string Password { get; set; }
+        public bool AutomaticRedirectAfterSignOut { get; set; }
 
-        public bool RememberLogin { get; set; }
-        public string ReturnUrl { get; set; }
+        public string LogoutId { get; set; }
+        public bool TriggerExternalSignout => ExternalAuthenticationScheme != null;
+        public string ExternalAuthenticationScheme { get; set; }
     }
 }

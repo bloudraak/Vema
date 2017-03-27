@@ -24,11 +24,15 @@
 
 #endregion
 
-namespace IdentityServer4.Quickstart.UI
+using System.Collections.Generic;
+
+namespace Vema.Authorization.Portal.Controllers.Consent
 {
-    public class ExternalProvider
+    public class ConsentInputModel
     {
-        public string DisplayName { get; set; }
-        public string AuthenticationScheme { get; set; }
+        public string Button { get; set; }
+        public IEnumerable<string> ScopesConsented { get; set; }
+        public bool RememberConsent { get; set; }
+        public string ReturnUrl { get; set; }
     }
 }

@@ -27,8 +27,9 @@
 using System.Threading.Tasks;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Mvc;
+using Vema.Authorization.Portal.ViewModels;
 
-namespace IdentityServer4.Quickstart.UI
+namespace Vema.Authorization.Portal.Controllers
 {
     [SecurityHeaders]
     public class HomeController : Controller
